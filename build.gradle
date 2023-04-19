@@ -1,0 +1,70 @@
+plugins {
+	id 'fabric-loom' version '1.1-SNAPSHOT'
+	id 'maven-publish'
+	id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+repositories {
+	maven { url = "https://cursemaven.com/" }
+	maven { url = "https://jitpack.io/" }
+	maven { url = "https://maven.architectury.dev" }
+	maven { url = "https://maven.saps.dev/minecraft" }
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	modImplementation "com.github.quiqueck:BCLib:${project.bclib_version}"
+	modImplementation "curse.maven:betterend-413596:${project.betterend_version}"
+
+	modImplementation "dev.latvian.mods:kubejs-fabric:${project.kubejs_version}"
+
+	shadow "space.arim.dazzleconf:dazzleconf-ext-snakeyaml:${project.dazzleconf_version}"
+}
+
+base {
+	archivesName = project.archives_base_name
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 17
+}
+
+java {
+	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
+}
+
+jar {
+	from("LICENSE") {
+		rename { "${it}_${base.archivesName.get()}"}
+	}
+}
+
+shadowJar {
+	configurations = [project.configurations.shadow]
+	archiveClassifier.set("shadow")
+	relocate "space.arim.dazzleconf", "net.swedz.bclibjsonifier.shadow.space.arim.dazzleconf"
+	relocate "org.yaml.snakeyaml", "net.swedz.bclibjsonifier.shadow.org.yaml.snakeyaml"
+}
+
+remapJar {
+	dependsOn(shadowJar)
+	inputFile = tasks.shadowJar.archiveFile
+}

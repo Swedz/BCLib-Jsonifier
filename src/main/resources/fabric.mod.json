@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "bclibjsonifier",
+  "version": "${version}",
+
+  "name": "BCLib Jsonifier",
+  "description": "Fixes the nasty BCLib mess with tags and recipes.",
+  "authors": [
+    "Swedz"
+  ],
+  "contact": {
+    "homepage": "https://swedz.net/",
+    "sources": "https://github.com/Swedz/BCLib-Jsonifier"
+  },
+
+  "license": "MIT",
+  "icon": "assets/bclibjsonifier/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "preLaunch": [
+      "net.swedz.bclibjsonifier.BCLibJsonifier"
+    ]
+  },
+  "mixins": [
+    "bclibjsonifier.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.18",
+    "fabric-api": "*",
+    "minecraft": "~1.19.2",
+    "java": ">=17",
+    "bclib": ">=2.1.6",
+    "kubejs": ">=1902.6.0-build.142"
+  },
+  "suggests": {
+    "betterend": ">=2.1.4"
+  }
+}
