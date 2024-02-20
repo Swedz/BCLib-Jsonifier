@@ -51,7 +51,7 @@ public final class CookingRecipeJsonifier implements RecipeJsonifier<AbstractCoo
 			json.add("ingredient", ingredients);
 		}
 		
-		json.add("result", recipe.getOutput().toJsonJS());
+		json.addProperty("result", recipe.getOutput().toJsonJS().get("item").getAsString());
 		
 		json.addProperty("experience", recipe.getExperience());
 		
